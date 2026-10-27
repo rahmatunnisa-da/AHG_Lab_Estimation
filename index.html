@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BSI Lab Request Form</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --teal:       #0F6E56;
+    --teal-mid:   #1D9E75;
+    --teal-light: #E1F5EE;
+    --teal-pale:  #f0faf6;
+    --gray-dk:    #2C2C2A;
+    --gray-md:    #5F5E5A;
+    --gray-lt:    #C8C6BC;
+    --gray-bg:    #F4F2EB;
+    --amber-lt:   #FEF3E2;
+    --amber-dk:   #854F0B;
+    --blue-lt:    #EAF3FD;
+    --blue-dk:    #185FA5;
+    --red-lt:     #FDEAEA;
+    --red-dk:     #A32D2D;
+    --green-lt:   #E8F5E9;
+    --green-dk:   #2E7D32;
+    --purple-lt:  #F3E8FD;
+    --purple-dk:  #6A1B9A;
+    --orange-lt:  #FFF3E0;
+    --orange-dk:  #E65100;
+    --white:      #FFFFFF;
+    --border:     #C8C6BC;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--gray-dk); background: var(--gray-bg); }
+  .page-wrap { max-width: 860px; margin: 0 auto; background: white; box-shadow: 0 0 40px rgba(0,0,0,0.1); }
+
+  /* PRINT BAR */
+  .print-bar { background: var(--gray-bg); border-bottom: 1px solid var(--gray-lt); padding: 10px 24px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .print-bar-left { font-size: 11px; color: var(--gray-md); }
+  .print-bar-right { display: flex; gap: 8px; }
+  .btn { border-radius: 4px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 7px 16px; border: none; }
+  .btn-primary { background: var(--teal); color: white; font-weight: 500; }
+  .btn-primary:hover { background: var(--teal-mid); }
+  .btn-ghost { background: white; border: 1px solid var(--border); color: var(--gray-md); }
+  .btn-ghost:hover { border-color: var(--teal-mid); color: var(--teal); }
+
+  /* HEADER */
+  .hdr { background: var(--teal); padding: 18px 24px 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .hdr-left h1 { color: white; font-size: 19px; font-weight: 600; letter-spacing: -0.3px; }
+  .hdr-left p { color: rgba(255,255,255,0.7); font-size: 11px; margin-top: 2px; }
+  .badge { display: inline-block; background: var(--teal-light); color: var(--teal); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; }
+  .hdr-meta { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 6px 14px; align-items: end; }
+  .hdr-field label { color: rgba(255,255,255,0.65); font-size: 10px; display: block; margin-bottom: 3px; }
+  .hdr-field input, .hdr-field select {
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 4px; color: white; font-family: 'DM Sans', sans-serif;
+    font-size: 12px; padding: 5px 8px; width: 100%; outline: none;
+  }
+  .hdr-field input::placeholder { color: rgba(255,255,255,0.4); }
+  .hdr-field input:focus, .hdr-field select:focus { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.22); }
+  .hdr-field select option { background: #0a5040; }
+  .priority-wrap { display: flex; flex-direction: column; gap: 4px; }
+  .priority-wrap label { color: rgba(255,255,255,0.65); font-size: 10px; }
+  .priority-opts { display: flex; gap: 12px; }
+  .chk-lbl { display: flex; align-items: center; gap: 5px; cursor: pointer; color: rgba(255,255,255,0.9); font-size: 12px; }
+  .chk-lbl input[type=checkbox] { accent-color: #fff; width: 13px; height: 13px; }
+
+  /* BODY */
+  .body { padding: 0 24px 24px; }
+
+  /* SECTION */
+  .section { margin-top: 16px; }
+  .sec-hdr { background: var(--teal); color: white; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 10px; border-radius: 3px 3px 0 0; }
+  .sec-body { border: 1px solid var(--gray-lt); border-top: none; border-radius: 0 0 4px 4px; padding: 12px; }
+
+  /* INPUTS */
+  input[type=text], input[type=date], input[type=email], input[type=number], select, textarea {
+    background: var(--white); border: 1px solid var(--border); border-radius: 4px;
+    color: var(--gray-dk); font-family: 'DM Sans', sans-serif; font-size: 12.5px;
+    padding: 5px 8px; outline: none; width: 100%; transition: border-color 0.15s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--teal-mid); box-shadow: 0 0 0 2px rgba(29,158,117,0.12); }
+  textarea { resize: vertical; min-height: 60px; }
+  select { cursor: pointer; }
+
+  /* GRID */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px 14px; }
+  .field { display: flex; flex-direction: column; gap: 3px; }
+  .field label { font-size: 10.5px; color: var(--gray-md); font-weight: 500; }
+
+  /* FARM BLOCK */
+  .farm-block { margin-bottom: 10px; }
+  .farm-hdr { background: var(--teal-light); border: 1px solid var(--teal-mid); border-radius: 4px 4px 0 0; padding: 7px 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .farm-hdr-left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+  .farm-num { background: var(--teal); color: white; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+  .farm-hdr-left input { flex: 1; background: white; border: 1px solid var(--teal-mid); border-radius: 3px; font-size: 13px; font-weight: 500; padding: 3px 7px; color: var(--teal); }
+  .batch-wrap { border: 1px solid var(--border); border-top: none; border-radius: 0 0 4px 4px; overflow-x: auto; }
+  .batch-table { width: 100%; border-collapse: collapse; font-size: 11.5px; min-width: 820px; }
+  .batch-table th { background: var(--gray-bg); color: var(--gray-md); font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 5px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .batch-table td { padding: 3px 3px; border-bottom: 1px solid #EDECE7; vertical-align: middle; }
+  .batch-table tr:last-child td { border-bottom: none; }
+  .batch-table tr:nth-child(even) td { background: #FAFAF8; }
+  .batch-table select, .batch-table input { padding: 4px 5px; font-size: 11.5px; border-radius: 3px; }
+  .age-wrap { display: flex; gap: 3px; }
+  .age-wrap input { width: 46px; text-align: center; }
+  .age-unit { width: 56px !important; flex-shrink: 0; }
+  .del-btn { background: none; border: none; color: var(--gray-lt); cursor: pointer; font-size: 16px; padding: 1px 4px; border-radius: 3px; }
+  .del-btn:hover { color: var(--red-dk); }
+  .add-batch-btn { display: flex; align-items: center; gap: 6px; margin: 5px 0 0; background: var(--teal-pale); border: 1px dashed var(--teal-mid); border-radius: 0 0 4px 4px; color: var(--teal); cursor: pointer; font-family: 'DM Sans',sans-serif; font-size: 11.5px; font-weight: 500; padding: 5px 12px; width: 100%; }
+  .add-batch-btn:hover { background: var(--teal-light); }
+  .add-farm-btn { display: flex; align-items: center; gap: 6px; margin-top: 6px; background: var(--teal-pale); border: 1px dashed var(--teal-mid); border-radius: 4px; color: var(--teal); cursor: pointer; font-family: 'DM Sans',sans-serif; font-size: 12px; font-weight: 500; padding: 6px 12px; width: 100%; }
+  .add-farm-btn:hover { background: var(--teal-light); }
+
+  /* SUMMARY BAR */
+  .summary-bar { background: var(--teal-light); border: 1px solid var(--teal-mid); border-radius: 4px; padding: 6px 12px; font-size: 12px; color: var(--teal); font-weight: 500; display: flex; justify-content: space-between; align-items: center; margin-top: 8px; flex-wrap: wrap; gap: 6px; }
+  .summary-bar span { font-family: 'DM Mono', monospace; font-weight: 600; }
+
+  /* TAGS */
+  .tag { display: inline-block; font-size: 9.5px; font-weight: 600; padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
+  .tag-sero    { background: var(--blue-lt);   color: var(--blue-dk); }
+  .tag-para    { background: var(--amber-lt);  color: var(--amber-dk); }
+  .tag-pcr     { background: var(--purple-lt); color: var(--purple-dk); }
+  .tag-patho   { background: var(--red-lt);    color: var(--red-dk); }
+  .tag-micro   { background: var(--green-lt);  color: var(--green-dk); }
+  .tag-prox    { background: var(--orange-lt); color: var(--orange-dk); }
+  .tag-myco    { background: #F3E5F5;          color: #4A148C; }
+  .tag-iso     { background: #FFF8E1;          color: #F57F17; }
+  .tag-mineral { background: #E0F7FA;          color: #006064; }
+
+  /* TESTS TABLE */
+  .tests-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .tests-table th { background: var(--gray-bg); color: var(--gray-md); font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+  .tests-table td { padding: 4px 6px; border-bottom: 1px solid #EDECE7; vertical-align: middle; }
+  .tests-table tr:last-child td { border-bottom: none; }
+  .tests-table tr:nth-child(even) td { background: #FAFAF8; }
+  .cost-cell { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray-md); text-align: right; }
+  .total-row td { background: var(--teal-light) !important; font-weight: 600; border-top: 2px solid var(--teal-mid); }
+  .total-row .cost-cell { color: var(--teal); font-size: 12px; }
+
+  /* TEST PICKER */
+  .test-picker-wrap { display: flex; gap: 8px; margin-top: 8px; align-items: center; flex-wrap: wrap; }
+  .cat-filter { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+  .cat-btn { background: var(--gray-bg); border: 1px solid var(--border); border-radius: 20px; color: var(--gray-md); cursor: pointer; font-family: 'DM Sans',sans-serif; font-size: 11px; padding: 3px 10px; transition: all 0.15s; }
+  .cat-btn:hover, .cat-btn.active { border-color: var(--teal); color: var(--teal); background: var(--teal-pale); }
+  #test-picker { flex: 1; min-width: 220px; }
+  .add-test-btn { background: var(--teal); border: none; border-radius: 4px; color: white; cursor: pointer; font-family: 'DM Sans',sans-serif; font-size: 12px; font-weight: 500; padding: 6px 14px; white-space: nowrap; }
+  .add-test-btn:hover { background: var(--teal-mid); }
+
+  /* CONDITION */
+  .cond-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .cond-group label.group-label { font-size: 10.5px; font-weight: 600; color: var(--gray-md); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 5px; }
+  .opt-list { display: flex; flex-direction: column; gap: 4px; }
+  .opt { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; }
+  .opt input[type=checkbox] { accent-color: var(--teal); width: 13px; height: 13px; flex-shrink: 0; }
+
+  /* SIG */
+  .sig-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .sig-box { border: 1px solid var(--border); border-radius: 4px; padding: 10px; text-align: center; }
+  .sig-box .role { font-size: 10.5px; color: var(--gray-md); margin-bottom: 28px; }
+  .sig-box .sig-line { border-top: 1px solid var(--gray-lt); margin: 0 12px 6px; }
+  .sig-box .hint { font-size: 10px; color: var(--gray-lt); }
+  .sig-box input { margin-top: 5px; text-align: center; font-size: 12px; border: none; border-bottom: 1px dashed var(--border); border-radius: 0; padding: 2px 4px; box-shadow: none !important; }
+
+  /* FOOTER */
+  .footer { border-top: 1px solid var(--gray-lt); padding: 8px 24px; display: flex; justify-content: space-between; font-size: 10px; color: var(--gray-lt); margin-top: 10px; }
+
+  /* PRINT */
+  @media print {
+    body { background: white; font-size: 10.5px; }
+    .page-wrap { box-shadow: none; max-width: 100%; }
+    .print-bar, .add-batch-btn, .add-farm-btn, .test-picker-wrap, .cat-filter, .del-btn { display: none !important; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    input, select, textarea { border: none !important; border-bottom: 1px solid #ccc !important; border-radius: 0 !important; box-shadow: none !important; background: white !important; }
+    .hdr-field input, .hdr-field select { border: none !important; border-bottom: 1px solid rgba(255,255,255,0.5) !important; background: transparent !important; }
+    .batch-table { min-width: unset; }
+  }
+
+  /* SHEETS INTEGRATION */
+  .print-bar { flex-wrap: wrap; }
+  .print-bar-right { align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+  .btn-submit { background: var(--gray-dk); color: white; font-weight: 500; }
+  .btn-submit:hover { background: #444441; }
+  .btn:disabled { opacity: 0.6; cursor: wait; }
+  .status { font-size: 11px; color: var(--gray-md); max-width: 340px; text-align: right; }
+  .status.ok { color: var(--green-dk); } .status.warn { color: var(--amber-dk); } .status.err { color: var(--red-dk); }
+  select:disabled { opacity: 0.6; cursor: not-allowed; }
+  @media print { select { -webkit-appearance: none; appearance: none; } .status { display: none; } }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="print-bar">
+    <span class="print-bar-left">PT Bounty Segar Indonesia — Lab Submission Request</span>
+    <div class="print-bar-right">
+      <span id="status" class="status"></span>
+      <button class="btn btn-ghost" onclick="loadData()" title="Reload staff list and pricelist from Google Sheets">↻ Refresh data</button>
+      <button class="btn btn-ghost" onclick="clearForm()">Clear form</button>
+      <button class="btn btn-submit" id="submit-btn" onclick="submitForm()">📤 Submit</button>
+      <button class="btn btn-primary" onclick="window.print()">🖨 Print / Save PDF</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div style="flex:1;">
+      <h1>PT Bounty Segar Indonesia</h1>
+      <p>Animal Health Division — Laboratory Submission Request</p>
+      <div class="hdr-meta">
+        <div class="hdr-field">
+          <label>Destination Laboratory</label>
+          <select id="vendor" onchange="onVendorChange()"><option value="">— Select vendor —</option></select>
+        </div>
+        <div class="hdr-field">
+          <label>Ref No.</label>
+          <input type="text" id="ref_no" placeholder="Auto on submit">
+        </div>
+        <div class="hdr-field">
+          <label>Date of Submission</label>
+          <input type="date" id="sub_date">
+        </div>
+        <div class="priority-wrap">
+          <label>Priority</label>
+          <div class="priority-opts">
+            <label class="chk-lbl"><input type="checkbox"> Routine</label>
+            <label class="chk-lbl"><input type="checkbox"> Urgent</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="flex-shrink:0;"><div class="badge">Lab Request Form</div></div>
+  </div>
+
+  <div class="body">
+
+    <!-- 1. Submission Details -->
+    <div class="section">
+      <div class="sec-hdr">1. Submission Details</div>
+      <div class="sec-body grid2">
+        <div class="field"><label>Submitted by (name / position)</label><select id="submitted_by" onchange="onSubmittedByChange()"><option value="">— Select name —</option></select></div>
+        <div class="field"><label>Animal health contact (name / phone)</label><input type="text" id="ah_contact" placeholder="Auto-filled from Submitted by"></div>
+      </div>
+    </div>
+
+    <!-- 2. Farm & Sample Origin -->
+    <div class="section">
+      <div class="sec-hdr">2. Farm &amp; Sample Origin</div>
+      <div class="sec-body" style="padding-bottom:8px;">
+        <div id="farms-container"></div>
+        <button class="add-farm-btn" onclick="addFarm()">＋ Add another farm</button>
+        <div class="summary-bar">
+          <span>Total samples: <span id="total-count">0</span></span>
+          <span>Farms: <span id="farm-count">0</span></span>
+          <span>Batches: <span id="batch-count">0</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Tests Requested -->
+    <div class="section">
+      <div class="sec-hdr">3. Tests Requested</div>
+      <div class="sec-body">
+        <div class="cat-filter" id="cat-filter"></div>
+        <table class="tests-table">
+          <thead>
+            <tr>
+              <th style="width:28px;"></th>
+              <th>Test / Panel</th>
+              <th>Category</th>
+              <th>Matrix</th>
+              <th style="text-align:right;">Price (Rp)</th>
+              <th style="text-align:right;">Est. Cost</th>
+              <th style="width:24px;"></th>
+            </tr>
+          </thead>
+          <tbody id="tests-body"></tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td colspan="4" style="padding:6px 8px;font-size:11px;">Estimated total (price × samples per test)</td>
+              <td class="cost-cell" id="total-unit">—</td>
+              <td class="cost-cell" id="total-cost">Rp 0</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+        <div class="test-picker-wrap">
+          <select id="test-picker"><option value="">— Select test to add —</option></select>
+          <button class="add-test-btn" onclick="addSelectedTest()">＋ Add test</button>
+        </div>
+        <p id="price-note" style="font-size:10px;color:var(--gray-lt);margin-top:5px;"></p>
+      </div>
+    </div>
+
+    <!-- 4. Sample Condition -->
+    <div class="section">
+      <div class="sec-hdr">4. Sample Condition &amp; Transport</div>
+      <div class="sec-body">
+        <div class="cond-grid">
+          <div class="cond-group">
+            <label class="group-label">Storage condition</label>
+            <div class="opt-list">
+              <label class="opt"><input type="checkbox" checked> Chilled (2–8°C)</label>
+              <label class="opt"><input type="checkbox"> Frozen (−20°C)</label>
+              <label class="opt"><input type="checkbox"> Ambient</label>
+            </div>
+          </div>
+          <div class="cond-group">
+            <label class="group-label">Container type</label>
+            <div class="opt-list">
+              <label class="opt"><input type="checkbox" checked> Serum tube (red cap)</label>
+              <label class="opt"><input type="checkbox"> EDTA blood tube</label>
+              <label class="opt"><input type="checkbox"> Fecal pot (labeled)</label>
+              <label class="opt"><input type="checkbox"> Swab</label>
+              <label class="opt"><input type="checkbox"> Other</label>
+            </div>
+          </div>
+          <div class="cond-group">
+            <label class="group-label">Visible defects</label>
+            <div class="opt-list">
+              <label class="opt"><input type="checkbox"> None observed</label>
+              <label class="opt"><input type="checkbox"> Mild haemolysis</label>
+              <label class="opt"><input type="checkbox"> Noted in comments</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Clinical Notes -->
+    <div class="section">
+      <div class="sec-hdr">5. Clinical Notes &amp; Background</div>
+      <div class="sec-body">
+        <textarea id="clin_notes" rows="3" placeholder="Flock history, mortality trend, production data, treatments, any relevant context…"></textarea>
+      </div>
+    </div>
+
+    <!-- 6. Result Delivery -->
+    <div class="section">
+      <div class="sec-hdr">6. Result Delivery</div>
+      <div class="sec-body">
+        <div class="grid2" style="margin-bottom:10px;">
+          <div class="field"><label>Report to (email)</label><input type="email" id="report_to" placeholder="email@bounty.co.id"></div>
+          <div class="field"><label>Copy to</label><input type="email" id="copy_to" placeholder="optional"></div>
+        </div>
+        <div class="grid2">
+          <div>
+            <div style="font-size:10.5px;color:var(--gray-md);font-weight:500;margin-bottom:5px;">Expected turnaround</div>
+            <div class="opt-list" style="flex-direction:row;gap:14px;">
+              <label class="opt"><input type="checkbox"> 3–5 days</label>
+              <label class="opt"><input type="checkbox"> 7–10 days</label>
+              <label class="opt"><input type="checkbox"> ASAP</label>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:10.5px;color:var(--gray-md);font-weight:500;margin-bottom:5px;">Report format</div>
+            <div class="opt-list" style="flex-direction:row;gap:14px;">
+              <label class="opt"><input type="checkbox"> PDF</label>
+              <label class="opt"><input type="checkbox"> Excel</label>
+              <label class="opt"><input type="checkbox"> Both</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Authorization -->
+    <div class="section">
+      <div class="sec-hdr">7. Authorization</div>
+      <div class="sec-body">
+        <div class="sig-row">
+          <div class="sig-box">
+            <div class="role">Submitted by</div>
+            <div class="sig-line"></div>
+            <div class="hint">Signature &amp; date</div>
+            <input type="text" id="sig_submitter" placeholder="Name / position">
+          </div>
+          <div class="sig-box">
+            <div class="role">Approved by — Animal Health</div>
+            <div class="sig-line"></div>
+            <div class="hint">Signature &amp; date</div>
+            <input type="text" id="sig_approver" placeholder="drh. ___________________">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /body -->
+  <div class="footer">
+    <span>PT Bounty Segar Indonesia — Internal document. Retain one copy with dispatched samples.</span>
+    <span>Form rev. June 2026</span>
+  </div>
+</div>
+
+<script>
+// ═════════════════════════════════════════════════════════════════════════════
+//  CONFIG — paste the Web App URL you get after deploying Code.gs
+// ═════════════════════════════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1vX_sIrT8fF3FRz9GPF3h1PwilZsrbww6CSHHI3Ofvl3FCdOfh6PeMqLPke6iWlqA/exec';
+const CACHE_KEY = 'bsi_lab_form_data_v1';   // last good copy of Sheet data (offline fallback)
+
+// ═════════════════════════════════════════════════════════════════════════════
+//  STATE
+// ═════════════════════════════════════════════════════════════════════════════
+let PRICELIST = [];      // [{cat,name,price,method,matrix,lab}]  ← from Sheet "Pricelist"
+let PEOPLE    = [];      // [{name,phone}]                        ← from Sheet "INDEX"
+let VENDORS   = [];      // unique values of the Lab column
+let currentVendor = '';
+let activeCat = 'All';
+let addedTests = [];     // tests in the "Tests Requested" table
+let submittedRef = null;
+let submitting = false;
+
+const BATCH_OPTS   = Array.from({length:10}, (_,i) => `Batch ${i+1}`);
+const KANDANG_OPTS = Array.from({length:20}, (_,i) => `Kandang ${i+1}`);
+
+const CAT_TAG = {
+  'Serology (HI)':'tag-sero','Serology (ELISA)':'tag-sero','Serology (Rapid)':'tag-sero',
+  'PCR (Conventional)':'tag-pcr','PCR (Real-time)':'tag-pcr','PCR (Sequencing)':'tag-pcr',
+  'Pathology':'tag-patho','Parasitology':'tag-para','Microbiology':'tag-micro',
+  'Isolation':'tag-iso','Proximate':'tag-prox','Mycotoxin (ELISA)':'tag-myco','Water Mineral':'tag-mineral',
+};
+const TAG_FALLBACK = ['tag-sero','tag-para','tag-pcr','tag-patho','tag-micro','tag-prox','tag-myco','tag-iso','tag-mineral'];
+function tagFor(cat) {
+  if (CAT_TAG[cat]) return CAT_TAG[cat];
+  let h = 0; for (const c of String(cat)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return TAG_FALLBACK[h % TAG_FALLBACK.length];
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+//  HELPERS
+// ═════════════════════════════════════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const rp  = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+
+function parsePrice(v) {
+  if (typeof v === 'number') return v;
+  let s = String(v ?? '').replace(/[^\d.,-]/g, '');
+  if (!s) return 0;
+  if (/^-?\d{1,3}([.,]\d{3})+$/.test(s)) s = s.replace(/[.,]/g, '');   // 7.900 / 7,900 → 7900
+  else s = s.replace(',', '.');
+  const n = parseFloat(s);
+  return isNaN(n) ? 0 : n;
+}
+
+function setStatus(msg, kind) {
+  const el = $('status');
+  el.textContent = msg || '';
+  el.className = 'status' + (kind ? ' ' + kind : '');
+}
+
+function setDefaultDate() {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  $('sub_date').value = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+//  LOAD DATA FROM GOOGLE SHEETS
+// ═════════════════════════════════════════════════════════════════════════════
+function applyData(data) {
+  PEOPLE = (data.people || []).filter(p => p && p.name);
+  PRICELIST = (data.prices || []).map(r => ({
+    cat: String(r.cat || 'Other').trim(),
+    name: String(r.name || '').trim(),
+    price: parsePrice(r.price),
+    method: String(r.method || '').trim(),
+    matrix: String(r.matrix || '').trim(),
+    lab: String(r.lab || '').trim(),
+  })).filter(r => r.name && r.lab);
+  VENDORS = [...new Set(PRICELIST.map(t => t.lab))];
+
+  fillPeopleSelect();
+  fillVendorSelect();
+  remapSelections();
+  buildCatFilter();
+  populatePicker();
+  renderFarms();
+  updatePriceNote();
+}
+
+async function loadData() {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.startsWith('PASTE_')) {
+    setStatus('Set APPS_SCRIPT_URL in the HTML file to connect to Google Sheets.', 'err');
+    return;
+  }
+  setStatus('Loading data from Google Sheets…');
+  try {
+    const res  = await fetch(APPS_SCRIPT_URL + (APPS_SCRIPT_URL.includes('?') ? '&' : '?') + 'action=data&_=' + Date.now());
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Unknown error');
+    applyData(data);
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), data })); } catch (e) {}
+    setStatus(`Data loaded ✓ (${PRICELIST.length} prices, ${PEOPLE.length} staff)`, 'ok');
+  } catch (err) {
+    let cached = null;
+    try { cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); } catch (e) {}
+    if (cached && cached.data) {
+      applyData(cached.data);
+      setStatus('Could not reach Google Sheets — using data cached on ' + new Date(cached.at).toLocaleString('id-ID') + '.', 'warn');
+    } else {
+      setStatus('Could not load data: ' + err.message, 'err');
+    }
+  }
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+//  SUBMITTED BY  +  ANIMAL HEALTH CONTACT AUTO-FILL
+// ═════════════════════════════════════════════════════════════════════════════
+function fillPeopleSelect() {
+  const sel = $('submitted_by'), prev = sel.value;
+  sel.innerHTML = '<option value="">— Select name —</option>' +
+    PEOPLE.map(p => `<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
+  if (PEOPLE.some(p => p.name === prev)) sel.value = prev;
+}
+
+function onSubmittedByChange() {
+  const name = $('submitted_by').value;
+  const person = PEOPLE.find(p => p.name === name);
+  $('ah_contact').value = person ? (person.phone ? `${person.name} / ${person.phone}` : person.name) : '';
+  $('sig_submitter').value = name;
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+//  VENDOR  +  VENDOR-SPECIFIC PRICELIST
+// ═════════════════════════════════════════════════════════════════════════════
+function vendorPrices() { return currentVendor ? PRICELIST.filter(t => t.lab === currentVendor) : []; }
+function getCats()      { return [...new Set(vendorPrices().map(t => t.cat))]; }
+function getTestsByCat() {
+  const g = {};
+  vendorPrices().forEach(t => { (g[t.cat] = g[t.cat] || []).push(t); });
+  return g;
+}
+function findTest(cat, name) { return vendorPrices().find(t => t.name === name && (!cat || t.cat === cat)); }
+
+function fillVendorSelect() {
+  const sel = $('vendor'), prev = currentVendor || sel.value;
+  sel.innerHTML = '<option value="">— Select vendor —</option>' +
+    VENDORS.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
+  currentVendor = VENDORS.includes(prev) ? prev : '';
+  sel.value = currentVendor;
+}
+
+// Re-match tests already chosen against the active vendor's pricelist (updates prices, drops unavailable)
+function remapSelections() {
+  const list = vendorPrices(), prev = addedTests;
+  let dropped = 0, cleared = 0;
+  addedTests = [];
+  prev.forEach(t => {
+    const m = list.find(x => x.name === t.name && x.cat === t.cat);
+    if (m) addedTests.push({ ...m, on: t.on !== false }); else dropped++;
+  });
+  const cats = new Set(list.map(t => t.cat));
+  farms.forEach(f => f.batches.forEach(b => {
+    if (b.testName && !list.find(x => x.name === b.testName && x.cat === b.testCat)) { b.testName = ''; cleared++; }
+    if (b.testCat && !cats.has(b.testCat)) b.testCat = '';
+  }));
+  return { dropped, cleared };
+}
+
+function onVendorChange() {
+  currentVendor = $('vendor').value;
+  const r = remapSelections();
+  activeCat = 'All';
+  buildCatFilter(); populatePicker(); renderFarms(); updatePriceNote();
+  if (r.dropped || r.cleared) {
+    setStatus(`Vendor set to ${currentVendor || 'none'}: ${r.dropped} test(s) and ${r.cleared} batch selection(s) not on this price list were removed.`, 'warn');
+  }
+}
+
+function updatePriceNote() {
+  $('price-note').textContent = currentVendor
+    ? `Prices from ${currentVendor} pricelist (live from Google Sheets). Est. cost = price × total samples entered above.`
+    : 'Select a vendor to load its pricelist. Est. cost = price × total samples entered above.';
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+//  TESTS REQUESTED
+// ═════════════════════════════════════════════════════════════════════════════
+function buildCatFilter() {
+  const el = $('cat-filter'), cats = getCats();
+  if (activeCat !== 'All' && !cats.includes(activeCat)) activeCat = 'All';
+  el.innerHTML = '';
+  if (!cats.length) return;
+  ['All', ...cats].forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (cat === activeCat ? ' active' : '');
+    btn.textContent = cat;
+    btn.onclick = () => { activeCat = cat; buildCatFilter(); populatePicker(); };
+    el.appendChild(btn);
+  });
+}
+
+function populatePicker() {
+  const sel = $('test-picker'), list = vendorPrices();
+  sel.disabled = !currentVendor;
+  if (!currentVendor) { sel.innerHTML = '<option value="">— Select a vendor first —</option>'; return; }
+  const filtered = activeCat === 'All' ? list : list.filter(t => t.cat === activeCat);
+  sel.innerHTML = '<option value="">— Select test —</option>';
+  const groups = {};
+  filtered.forEach(t => { (groups[t.cat] = groups[t.cat] || []).push(t); });
+  Object.keys(groups).forEach(cat => {
+    const og = document.createElement('optgroup');
+    og.label = cat;
+    groups[cat].forEach(t => {
+      const o = document.createElement('option');
+      o.value = list.indexOf(t);
+      o.textContent = `${t.name}  — ${rp(t.price)}`;
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
+  });
+}
+
+function getTotalSamples() {
+  let n = 0;
+  farms.forEach(f => f.batches.forEach(b => { n += parseInt(b.n) || 0; }));
+  return n;
+}
+
+function renderTests() {
+  const tbody = $('tests-body');
+  tbody.innerHTML = '';
+  const total = getTotalSamples();
+  let grandTotal = 0;
+  addedTests.forEach((t, i) => {
+    const on = t.on !== false, cost = t.price * total;
+    if (on) grandTotal += cost;
+    const tr = document.createElement('tr');
+    if (!on) tr.style.opacity = '0.45';
+    tr.innerHTML = `
+      <td style="text-align:center;"><input type="checkbox" ${on ? 'checked' : ''} onchange="toggleTest(${i},this.checked)" style="accent-color:var(--teal);width:13px;height:13px;"></td>
+      <td style="font-weight:500;font-size:12px;">${esc(t.name)}</td>
+      <td><span class="tag ${tagFor(t.cat)}">${esc(t.cat)}</span></td>
+      <td style="color:var(--gray-md);font-size:11.5px;">${esc(t.matrix)}</td>
+      <td class="cost-cell">${rp(t.price)}</td>
+      <td class="cost-cell">${total > 0 ? rp(cost) : '—'}</td>
+      <td><button class="del-btn" onclick="removeTest(${i})">×</button></td>`;
+    tbody.appendChild(tr);
+  });
+  $('total-cost').textContent = grandTotal > 0 ? rp(grandTotal) : 'Rp 0';
+  $('total-unit').textContent = '';
+}
+
+function toggleTest(i, on) { addedTests[i].on = on; renderTests(); }
+function removeTest(i)     { addedTests.splice(i, 1); renderTests(); }
+
+function addSelectedTest() {
+  const sel = $('test-picker'), idx = parseInt(sel.value);
+  if (isNaN(idx)) return;
+  const t = vendorPrices()[idx];
+  if (t && !addedTests.find(x => x.name === t.name && x.cat === t.cat)) {
+    addedTests.push({ ...t, on: true });
+    renderTests();
+  }
+  sel.value = '';
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+//  FARMS / BATCHES
+// ═════════════════════════════════════════════════════════════════════════════
+const blankBatch = () => ({ batch:'Batch 1', kandang:'Kandang 1', age:'', ageUnit:'weeks', n:'', date:'', testCat:'', testName:'' });
+let farms = [{ name:'', batches:[ blankBatch() ] }];
+
+function onBatchCatChange(sel, fi, bi) {
+  const b = farms[fi].batches[bi];
+  b.testCat = sel.value; b.testName = '';
+  const testSel = sel.closest('tr').querySelector('.batch-test-sel');
+  const entries = sel.value ? (getTestsByCat()[sel.value] || []) : [];
+  testSel.innerHTML = '<option value="">— Test —</option>' +
+    entries.map(t => `<option value="${esc(t.name)}">${esc(t.name)}</option>`).join('');
+  testSel.disabled = !sel.value;
+}
+
+function onBatchTestChange(sel, fi, bi) {
+  const b = farms[fi].batches[bi];
+  b.testName = sel.value;
+  // Make sure a test chosen for a batch also appears in "Tests Requested"
+  const t = sel.value ? findTest(b.testCat, sel.value) : null;
+  if (t && !addedTests.find(x => x.name === t.name && x.cat === t.cat)) addedTests.push({ ...t, on: true });
+  updateSummary();
+}
+
+function renderFarms() {
+  const container = $('farms-container');
+  container.innerHTML = '';
+  const cats = getCats();
+
+  farms.forEach((farm, fi) => {
+    const div = document.createElement('div');
+    div.className = 'farm-block';
+    div.innerHTML = `
+      <div class="farm-hdr">
+        <div class="farm-hdr-left">
+          <span class="farm-num">Farm ${fi+1}</span>
+          <input type="text" placeholder="Farm name / address" value="${esc(farm.name)}"
+            oninput="farms[${fi}].name=this.value"
+            style="color:var(--teal);font-weight:500;flex:1;">
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span style="font-size:11px;color:var(--teal-mid);">Matrix: Serum / Blood / Other</span>
+          ${farms.length > 1 ? `<button class="del-btn" onclick="removeFarm(${fi})">×</button>` : ''}
+        </div>
+      </div>
+      <div class="batch-wrap">
+        <table class="batch-table">
+          <thead><tr>
+            <th>Batch</th><th>Kandang / House</th><th>Age</th><th>Unit</th>
+            <th>No. Samples</th><th>Collection Date</th><th>Test Category</th><th>Specific Test</th><th></th>
+          </tr></thead>
+          <tbody id="batches-${fi}"></tbody>
+        </table>
+        ${farm.batches.length < 10 ? `<button class="add-batch-btn" onclick="addBatch(${fi})">＋ Add batch / house</button>` : ''}
+      </div>`;
+    container.appendChild(div);
+
+    const tbody = $(`batches-${fi}`);
+    farm.batches.forEach((b, bi) => {
+      const kandangExtra = KANDANG_OPTS.includes(b.kandang) ? '' : `<option value="${esc(b.kandang)}" selected>${esc(b.kandang)}</option>`;
+      const kandangOpts  = KANDANG_OPTS.map(o => `<option ${o===b.kandang?'selected':''}>${o}</option>`).join('');
+      const batchExtra   = BATCH_OPTS.includes(b.batch) ? '' : `<option value="${esc(b.batch)}" selected>${esc(b.batch)}</option>`;
+      const batchOpts    = BATCH_OPTS.map(o => `<option ${o===b.batch?'selected':''}>${o}</option>`).join('');
+
+      const catOpts = `<option value="">${currentVendor ? '— Category —' : '— Select vendor first —'}</option>` +
+        cats.map(c => `<option value="${esc(c)}" ${c===b.testCat?'selected':''}>${esc(c)}</option>`).join('');
+      const testEntries = b.testCat ? (getTestsByCat()[b.testCat] || []) : [];
+      const testOpts = `<option value="" ${!b.testName?'selected':''}>— Test —</option>` +
+        testEntries.map(t => `<option value="${esc(t.name)}" ${t.name===b.testName?'selected':''}>${esc(t.name)}</option>`).join('');
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><select style="min-width:74px;" onchange="farms[${fi}].batches[${bi}].batch=this.value;updateSummary()">${batchExtra}${batchOpts}</select></td>
+        <td style="min-width:108px;"><select style="min-width:104px;" onchange="farms[${fi}].batches[${bi}].kandang=this.value;updateSummary()">${kandangExtra}${kandangOpts}<option value="">Other…</option></select></td>
+        <td><input type="text" value="${esc(b.age)}" placeholder="—" oninput="farms[${fi}].batches[${bi}].age=this.value" style="width:42px;text-align:center;"></td>
+        <td><select style="width:62px;" onchange="farms[${fi}].batches[${bi}].ageUnit=this.value">
+              <option value="weeks" ${b.ageUnit==='weeks'?'selected':''}>weeks</option>
+              <option value="days"  ${b.ageUnit==='days' ?'selected':''}>days</option></select></td>
+        <td><input type="text" value="${esc(b.n)}" placeholder="—" oninput="farms[${fi}].batches[${bi}].n=this.value;updateSummary();" style="width:52px;text-align:center;"></td>
+        <td><input type="date" value="${esc(b.date)}" onchange="farms[${fi}].batches[${bi}].date=this.value" style="min-width:116px;"></td>
+        <td><select class="batch-cat-sel" style="min-width:136px;font-size:11.5px;" onchange="onBatchCatChange(this,${fi},${bi})" ${!currentVendor?'disabled':''}>${catOpts}</select></td>
+        <td class="test-td"><select class="batch-test-sel" style="min-width:200px;font-size:11.5px;" onchange="onBatchTestChange(this,${fi},${bi})" ${!b.testCat?'disabled':''}>${testOpts}</select></td>
+        <td>${farm.batches.length > 1 ? `<button class="del-btn" onclick="removeBatch(${fi},${bi})">×</button>` : ''}</td>`;
+      tbody.appendChild(tr);
+    });
+  });
+  updateSummary();
+}
+
+function addFarm() {
+  if (farms.length >= 8) return;
+  farms.push({ name:'', batches:[ blankBatch() ] });
+  renderFarms();
+}
+function removeFarm(fi) { farms.splice(fi, 1); renderFarms(); }
+function addBatch(fi) {
+  if (farms[fi].batches.length >= 10) return;
+  const b = blankBatch(); b.batch = `Batch ${farms[fi].batches.length + 1}`;
+  farms[fi].batches.push(b);
+  renderFarms();
+}
+function removeBatch(fi, bi) { farms[fi].batches.splice(bi, 1); renderFarms(); }
+
+function updateSummary() {
+  let total = 0, batches = 0;
+  farms.forEach(f => { batches += f.batches.length; f.batches.forEach(b => { total += parseInt(b.n) || 0; }); });
+  $('total-count').textContent = total;
+  $('farm-count').textContent  = farms.length;
+  $('batch-count').textContent = batches;
+  renderTests();
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+//  SUBMIT TO GOOGLE SHEETS
+// ═════════════════════════════════════════════════════════════════════════════
+const checkedTexts = root => root
+  ? [...root.querySelectorAll('label')].filter(l => l.querySelector('input[type=checkbox]:checked')).map(l => l.textContent.trim())
+  : [];
+function groupChecked(title) {
+  const g = [...document.querySelectorAll('.cond-group')].find(x => x.querySelector('.group-label').textContent.trim() === title);
+  return checkedTexts(g);
+}
+function rowChecked(title) {
+  const lbl = [...document.querySelectorAll('.sec-body div')].find(d => d.children.length === 0 && d.textContent.trim() === title);
+  return checkedTexts(lbl && lbl.nextElementSibling);
+}
+
+function collectPayload(regenerateRef) {
+  const total = getTotalSamples();
+  const tests = addedTests.filter(t => t.on !== false);
+  return {
+    refNo:      regenerateRef ? '' : $('ref_no').value.trim(),
+    subDate:    $('sub_date').value,
+    vendor:     currentVendor,
+    priority:   checkedTexts(document.querySelector('.priority-opts')),
+    submittedBy: $('submitted_by').value,
+    ahContact:  $('ah_contact').value.trim(),
+    farms: farms.map(f => ({
+      name: f.name,
+      batches: f.batches.map(b => ({
+        batch:b.batch, kandang:b.kandang, age:b.age, ageUnit:b.ageUnit, n:parseInt(b.n)||0,
+        date:b.date, testCat:b.testCat, testName:b.testName
+      }))
+    })),
+    tests: tests.map(t => ({ name:t.name, cat:t.cat, matrix:t.matrix, price:t.price, estCost:t.price * total })),
+    totalSamples: total,
+    farmCount:    farms.length,
+    batchCount:   farms.reduce((a, f) => a + f.batches.length, 0),
+    estTotal:     tests.reduce((a, t) => a + t.price * total, 0),
+    storage:      groupChecked('Storage condition'),
+    container:    groupChecked('Container type'),
+    defects:      groupChecked('Visible defects'),
+    notes:        $('clin_notes').value.trim(),
+    reportTo:     $('report_to').value.trim(),
+    copyTo:       $('copy_to').value.trim(),
+    turnaround:   rowChecked('Expected turnaround'),
+    reportFormat: rowChecked('Report format'),
+    signSubmitter: $('sig_submitter').value.trim(),
+    approvedBy:    $('sig_approver').value.trim(),
+  };
+}
+
+async function submitForm() {
+  if (submitting) return;
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.startsWith('PASTE_')) {
+    setStatus('Set APPS_SCRIPT_URL in the HTML file first.', 'err'); return;
+  }
+  let regenerate = false;
+  if (submittedRef) {
+    if (!confirm(`This form was already submitted as ${submittedRef}.\nSubmit it again as a NEW entry?`)) return;
+    regenerate = $('ref_no').value.trim() === submittedRef;
+  }
+  submitting = true;
+  const btn = $('submit-btn'); btn.disabled = true; btn.textContent = 'Submitting…';
+  setStatus('Saving to Google Sheets…');
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },   // simple request → no CORS preflight
+      body: JSON.stringify(collectPayload(regenerate)),
+    });
+    const out = await res.json();
+    if (!out.ok) throw new Error(out.error || 'Unknown error');
+    $('ref_no').value = out.refNo;
+    submittedRef = out.refNo;
+    setStatus(`Saved to Google Sheets ✓  Ref: ${out.refNo}`, 'ok');
+  } catch (err) {
+    setStatus('Submission failed: ' + err.message + ' — your entries are still on the form, please try again.', 'err');
+  } finally {
+    submitting = false; btn.disabled = false; btn.textContent = '📤 Submit';
+  }
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+//  CLEAR
+// ═════════════════════════════════════════════════════════════════════════════
+function clearForm() {
+  if (!confirm('Clear all form data?')) return;
+  document.querySelectorAll('input[type=text],input[type=date],input[type=email],textarea').forEach(el => el.value = '');
+  document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+  $('submitted_by').value = '';
+  $('vendor').value = '';
+  currentVendor = '';
+  farms = [{ name:'', batches:[ blankBatch() ] }];
+  addedTests = []; activeCat = 'All'; submittedRef = null;
+  setDefaultDate(); buildCatFilter(); populatePicker(); renderFarms(); updatePriceNote();
+  setStatus('');
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+//  INIT
+// ═════════════════════════════════════════════════════════════════════════════
+setDefaultDate();
+buildCatFilter(); populatePicker(); renderFarms(); updatePriceNote();
+loadData();
+</script>
+</body>
+</html>
